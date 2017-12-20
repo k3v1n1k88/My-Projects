@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 			CSocket s_client;
 			// Chung ta tao socket server va client de browser truy cap
 			CSocket csocketServer;
-			CSocket* csocketClient;
+			CSocket *csocketClient;
 			int tmpres;
 			char *ip;
 			char *get;
@@ -98,24 +98,27 @@ int main(int argc, char* argv[])
 
 			cout<<"Khoi tao socket Server thanh cong..."<<endl;
 
-			//Listen tren socket Server
 			if(csocketServer.Listen(1)==false){
-				cout<<"Cannot listen on this port!"<<endl;
-				csocketServer.Close();
-				return false;
+					cout<<"Cannot listen on this port!"<<endl;
+					csocketServer.Close();
+					return false;
 			}
 				
-				
+			//csocketClient.Create();	
+			s_client.Create();
+			char *type;
+			
 			while(1){
-				s_client.Create();
-				csocketClient = new CSocket();
-				cout<<"Dang cho ket noi..."<<endl;
-				if(csocketServer.Accept(*csocketClient)){	
-						cout<<"Da nhan ket noi..."<<endl;	
-				}
+				//Listen tren socket Server
 				char buffer1[1000];
 				string *buff1 = new string;
 				int nData=1;
+				
+				cout<<"Dang cho ket noi..."<<endl;
+				csocketClient = new CSocket;
+				if(csocketServer.Accept(*csocketClient)){	
+					cout<<"Da nhan ket noi..."<<endl;	
+				}
 				while(nData){
 					nData = csocketClient->Receive(buffer1,BUFSIZ,0);
 					buff1->append(buffer1,nData);
@@ -126,25 +129,46 @@ int main(int argc, char* argv[])
 				char* dup;
 				dup = new char[buff1->size() + 1];
 				memcpy(dup, buff1->c_str(), buff1->size() + 1);
-				char* token1 = strtok_s(dup," ",&host);
+				/*char* token1 = strtok_s(dup," ",&host);
 				token1 = strtok_s(NULL," ",&host);
 				char* token2= strtok_s(NULL," ",&host);
-				token2= strtok_s(NULL,"\r\n",&host);
+				token2= strtok_s(NULL,"\r\n",&host);*/
 				//Buoc 3: Ket noi toi Server
 				//ip = get_ip(host);
 				//Neu no khong phai lenh GET ta forward no lun
-				if(strcmp(dup,"GET")!=0){
-					s_client.Close();
+				if(strcmp(dup,"")==0){
+					csocketClient->ShutDown();
 					csocketClient->Close();
 					delete csocketClient;
 					continue;
 				}
+
+				// token2 = host name
+				char *pfind = strstr(dup,"Host");
+				char *token2 = strtok_s(pfind," ",&host);
+				token2 = strtok_s(NULL,"\r\n",&host);
+				pfind = strstr(host,"Connection");
+				type = strtok_s(pfind," ",&host);
+				type = strtok_s(NULL," :\r\n",&host);
+				// 
+				/*if(strcmp(dup,"GET")!=0){
+					s_client.Close();
+					csocketClient.Close();
+					continue;
+				}*/
 				ip = get_ip(token2);
+				if(ip == NULL){
+					shutdown(*csocketClient,5000);
+					csocketClient->Close();
+					continue;
+				}
 				fprintf(stderr, "IP is %s\n", ip);
 				if (s_client.Connect(convertCharArrayToLPCWSTR(ip), PORT) < 0)
 				{
 					perror("Could not connect");
-					exit(1);
+					shutdown(*csocketClient,5000);
+					csocketClient->Close();
+					continue;
 				}
 				//get = build_get_query(host, page);
 				//get = build_get_query(token2,token1);
@@ -154,14 +178,23 @@ int main(int argc, char* argv[])
 
 				//Send the query to the server
 				int sent = 0;
+				int checked = 1;
 				while (sent < strlen(get))
 				{
 					tmpres = s_client.Send(get + sent, strlen(get) - sent, 0);
 					if (tmpres == -1){
 						perror("Can't send query");
-						exit(1);
+						cout<<GetLastError();
+						checked=0;
+						break;
 					}
 					sent += tmpres;
+				}
+				//tmpres = s_client.Send(get + sent, strlen(get) - sent, 0);
+				if(checked ==0){
+					shutdown(*csocketClient,5000);
+					csocketClient->Close();
+					continue;
 				}
 				//now it is time to receive the page
 				memset(buf, 0, sizeof(buf));
@@ -191,10 +224,13 @@ int main(int argc, char* argv[])
 				//	//}
 				while(nDataLenght){
 					nDataLenght = s_client.Receive(buffer, BUFSIZ,0);
+					csocketClient->Send(buffer,nDataLenght,0);
 					if(nDataLenght<BUFSIZ)
 						break;
 					//buff.append(buffer,nDataLenght);
-					csocketClient->Send(buffer,nDataLenght,0);
+					
+					sent = 0;
+					int count = -1;	
 				}
 				//cout<<buff;
 				//	if (buf){
@@ -215,9 +251,14 @@ int main(int argc, char* argv[])
 				}
 				int len = buff.length();
 				csocketClient.Send(buff.c_str(),len,0);*/
-				s_client.Close();
-				csocketClient->Close();
+				//s_client.Close();
+				csocketClient->Detach();
+				//csocketServer.Attach(*csocketClient);
+				csocketClient->ShutDown();
 				delete csocketClient;
+				delete buff1;
+				free(get);
+				free(ip);
 			}
 			if (tmpres < 0)
 			{
@@ -257,12 +298,12 @@ char *get_ip(char *host)
 	if ((hent = gethostbyname(host)) == NULL)
 	{
 		perror("Can't get IP");
-		exit(1);
+		return 0;
 	}
 	if (inet_ntop(AF_INET, (void *)hent->h_addr_list[0], ip, iplen) == NULL)
 	{
 		perror("Can't resolve host");
-		exit(1);
+		return 0;
 	}
 	return ip;
 }

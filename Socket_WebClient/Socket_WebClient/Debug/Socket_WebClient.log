@@ -1,13 +1,13 @@
-﻿Build started 12/17/2017 7:32:39 PM.
+﻿Build started 12/19/2017 12:28:31 PM.
      1>Project "C:\Users\Administrator\Downloads\MMT\Socket_WebClient\Socket_WebClient\Socket_WebClient\Socket_WebClient.vcxproj" on node 2 (Build target(s)).
        Project file contains ToolsVersion="15.0". This toolset may be unknown or missing, in which case you may be able to resolve this by installing the appropriate version of MSBuild, or the build may have been forced to a particular ToolsVersion for policy reasons. Treating the project as if it had ToolsVersion="4.0". For more information, please see http://go.microsoft.com/fwlink/?LinkId=291333.
      1>InitializeBuildStatus:
-         Creating "Debug\Socket_WebClient.unsuccessfulbuild" because "AlwaysCreate" was specified.
+         Touching "Debug\Socket_WebClient.unsuccessfulbuild".
        ClCompile:
          All outputs are up-to-date.
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINSOCK_DEPRECATED_NO_WARNINGS /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Socket_WebClient.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Socket_WebClient.cpp
          Socket_WebClient.cpp
-     1>c:\users\administrator\downloads\mmt\socket_webclient\socket_webclient\socket_webclient\socket_webclient.cpp(157): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\administrator\downloads\mmt\socket_webclient\socket_webclient\socket_webclient\socket_webclient.cpp(182): warning C4018: '<' : signed/unsigned mismatch
        ResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -22,4 +22,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.03
+Time Elapsed 00:00:21.64

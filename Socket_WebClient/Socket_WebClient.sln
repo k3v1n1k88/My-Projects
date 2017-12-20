@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Socket_WebClient", "Socket_WebClient\Socket_WebClient.vcxproj", "{C7F2AD30-B739-44AC-859F-E9EB4DD71D32}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Proxy", "Proxy\Proxy.vcxproj", "{04DDFBC5-0BDB-4692-A0C6-0134F2AF74C5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Proxy2", "Proxy2\Proxy2.vcxproj", "{A07320BC-713A-4C8F-8DE3-E0440958E0E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,14 @@ Global
 		{C7F2AD30-B739-44AC-859F-E9EB4DD71D32}.Debug|Win32.Build.0 = Debug|Win32
 		{C7F2AD30-B739-44AC-859F-E9EB4DD71D32}.Release|Win32.ActiveCfg = Release|Win32
 		{C7F2AD30-B739-44AC-859F-E9EB4DD71D32}.Release|Win32.Build.0 = Release|Win32
+		{04DDFBC5-0BDB-4692-A0C6-0134F2AF74C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{04DDFBC5-0BDB-4692-A0C6-0134F2AF74C5}.Debug|Win32.Build.0 = Debug|Win32
+		{04DDFBC5-0BDB-4692-A0C6-0134F2AF74C5}.Release|Win32.ActiveCfg = Release|Win32
+		{04DDFBC5-0BDB-4692-A0C6-0134F2AF74C5}.Release|Win32.Build.0 = Release|Win32
+		{A07320BC-713A-4C8F-8DE3-E0440958E0E1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A07320BC-713A-4C8F-8DE3-E0440958E0E1}.Debug|Win32.Build.0 = Debug|Win32
+		{A07320BC-713A-4C8F-8DE3-E0440958E0E1}.Release|Win32.ActiveCfg = Release|Win32
+		{A07320BC-713A-4C8F-8DE3-E0440958E0E1}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
