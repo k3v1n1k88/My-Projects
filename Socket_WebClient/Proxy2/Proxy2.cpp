@@ -28,7 +28,7 @@
 //#define https "<!DOCTYPE html>\r\n<html>\r\n<head><title>Sorry, we do not support for HTTPS</title></head>\r\n<body>\r\n<font size=\"25\"><b>401 Page not reach</b></font>\r\n<p>Your request is not support</p>\r\n<p>Please try other</p>\r\n<hr>\r\n<p align=\"center\" >Proxy create by k3v1n1k88</p>\r\n</body>\r\n</html>"
 //#define forbiden "<html><head><title>403 Forbiden</title></head>\n<body><h1>Forbiden 403</h1>\n<p>You don't have permission to access/on this website</p>\n</body>\n</html>"
 // The one and only application object
-#define MAX_THREADS 5
+#define MAX_THREADS 20
 
 CWinApp theApp;
 
@@ -84,7 +84,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 			
 
 			CSocket csServer;	// Socket Server
-			SOCKET hSocket[10];	
+			SOCKET hSocket[MAX_THREADS];	
 
 
 			if(csServer.Create(8888,SOCK_STREAM,L"127.0.0.1")==false){
@@ -93,21 +93,22 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 				return 1;
 			}
 
-			if(csServer.Listen(10)==false){
+			if(csServer.Listen(MAX_THREADS)==false){
 				cout<<"Khong the lang nghe tren port nay"<<endl;
 			}
 
 			// Bat dau chay server voi 5 luong
 			while(1){
 				CSocket *csClient = new CSocket;
-				for(int i=0;i<10;i++){
+				for(int i=0;i<MAX_THREADS;i++){
+					cout<<"DANG CHO KET NOI..."<<endl;
 					if(csServer.Accept(*csClient)){
 						cout<<"Client da ket noi..."<<endl;
 						hSocket[i] = csClient ->Detach();
 						hThreadArray[i] = CreateThread(NULL, 0,BeginProcess,(LPVOID)&hSocket[i],0,&dwThreadIdArray[0]);
 					}
 				}
-				WaitForMultipleObjects(10, hThreadArray, TRUE, INFINITE);
+				WaitForMultipleObjects(MAX_THREADS, hThreadArray, TRUE, INFINITE);
 				delete csClient;
 			}
 				//for(int i=0;i<MAX_THREADS;i++){
